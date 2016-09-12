@@ -248,44 +248,66 @@ bkcore.hexgl.ShipControls = function(ctx)
 		lc.connect();
 	}
 
+	function logAction(action)
+	{
+		// construct an HTTP request
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'http://localhost:6007/move', true);
+		xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+		var postbody = {
+				"data": "0 0",
+				"gameId": 'hexgl',
+				"action": action
+			}
+		// send the collected data as JSON
+		xhr.send(JSON.stringify(postbody));
+		xhr.onloadend = function () {
+			console.log("woot");
+		}
+	}
+
 	function onKeyDown(event)
 	{
+		var action = '';
 		switch(event.keyCode)
 		{
-			case 38: /*up*/	self.key.forward = true; break;
+			case 38: /*up*/	self.key.forward = true; action = 'forward down'; break;
 
-			case 40: /*down*/self.key.backward = true; break;
+			case 40: /*down*/self.key.backward = true; action = 'backward down'; break;
 
-			case 37: /*left*/self.key.left = true; break;
+			case 37: /*left*/self.key.left = true; action = 'left down'; break;
 
-			case 39: /*right*/self.key.right = true; break;
+			case 39: /*right*/self.key.right = true; action = 'right down'; break;
 
-			case 81: /*Q*/self.key.ltrigger = true; break;
-			case 65: /*A*/self.key.ltrigger = true; break;
+			case 81: /*Q*/self.key.ltrigger = true; action = 'ltrigger down'; break;
+			case 65: /*A*/self.key.ltrigger = true; action = 'ltrigger down'; break;
 
-			case 68: /*D*/self.key.rtrigger = true; break;
-			case 69: /*E*/self.key.rtrigger = true; break;
+			case 68: /*D*/self.key.rtrigger = true; action = 'rtrigger down'; break;
+			case 69: /*E*/self.key.rtrigger = true; action = 'rtrigger down'; break;
 		}
+		logAction(action);
 	};
 
 	function onKeyUp(event)
 	{
+		var action = '';
 		switch(event.keyCode)
 		{
-			case 38: /*up*/	self.key.forward = false; break;
+			case 38: /*up*/	self.key.forward = false; action = 'forward up'; break;
 
-			case 40: /*down*/self.key.backward = false; break;
+			case 40: /*down*/self.key.backward = false; action = 'backward up'; break;
 
-			case 37: /*left*/self.key.left = false; break;
+			case 37: /*left*/self.key.left = false; action = 'left up'; break;
 
-			case 39: /*right*/self.key.right = false; break;
+			case 39: /*right*/self.key.right = false; action = 'right up'; break;
 
-			case 81: /*Q*/self.key.ltrigger = false; break;
-			case 65: /*A*/self.key.ltrigger = false; break;
+			case 81: /*Q*/self.key.ltrigger = false; action = 'ltrigger up'; break;
+			case 65: /*A*/self.key.ltrigger = false; action = 'ltrigger up'; break;
 
-			case 68: /*D*/self.key.rtrigger = false; break;
-			case 69: /*E*/self.key.rtrigger = false; break;
+			case 68: /*D*/self.key.rtrigger = false; action = 'rtrigger up'; break;
+			case 69: /*E*/self.key.rtrigger = false; action = 'rtrigger up'; break;
 		}
+		logAction(action);
 	};
 
 	domElement.addEventListener('keydown', onKeyDown, false);
