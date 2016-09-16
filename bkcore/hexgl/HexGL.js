@@ -423,7 +423,7 @@ bkcore.hexgl.HexGL.prototype.tweakShipControls = function()
 	}
 	else if(this.difficulty == 0)
 	{
-		c.airResist = 0.02;
+		c.airResist = 0.005;
 		c.airDrift = 0.06;
 		c.thrust = 0.02;
 		c.airBrake = 0.025;

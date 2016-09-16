@@ -26,7 +26,7 @@ bkcore.hexgl.ShipControls = function(ctx)
 	this.airDrift = 0.1;
 	this.thrust = 0.02;
 	this.airBrake = 0.02;
-	this.maxSpeed = 7.0;
+	this.maxSpeed = 10.0;
 	this.boosterSpeed = this.maxSpeed * 0.2;
 	this.boosterDecay = 0.01;
 	this.angularSpeed = 0.005;
@@ -256,7 +256,7 @@ bkcore.hexgl.ShipControls = function(ctx)
 		xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		var postbody = {
 				"data": "0 0",
-				"gameId": 'hexgl',
+				"gameId": '/Users/martin/Code/EEGLogs/HexGL/game1',
 				"action": action
 			}
 		// send the collected data as JSON
@@ -271,6 +271,13 @@ bkcore.hexgl.ShipControls = function(ctx)
 		var action = '';
 		switch(event.keyCode)
 		{
+			case 16:
+				if (event.location === KeyboardEvent.DOM_KEY_LOCATION_LEFT) {
+					self.key.left = true; action = 'left down';
+				} else if (event.location === KeyboardEvent.DOM_KEY_LOCATION_RIGHT) {
+					self.key.right = true; action = 'right down';
+				}
+			break;
 			case 38: /*up*/	self.key.forward = true; action = 'forward down'; break;
 
 			case 40: /*down*/self.key.backward = true; action = 'backward down'; break;
@@ -293,6 +300,13 @@ bkcore.hexgl.ShipControls = function(ctx)
 		var action = '';
 		switch(event.keyCode)
 		{
+			case 16:
+				if (event.location === KeyboardEvent.DOM_KEY_LOCATION_LEFT) {
+					self.key.left = false; action = 'left up';
+				} else if (event.location === KeyboardEvent.DOM_KEY_LOCATION_RIGHT) {
+					self.key.right = false; action = 'right up';
+				}
+			break;
 			case 38: /*up*/	self.key.forward = false; action = 'forward up'; break;
 
 			case 40: /*down*/self.key.backward = false; action = 'backward up'; break;
@@ -444,10 +458,11 @@ bkcore.hexgl.ShipControls.prototype.update = function(dt)
 			}
 		}
 
-		if(this.key.forward)
-			this.speed += this.thrust * dt;
-		else
-			this.speed -= this.airResist * dt;
+		// if(this.key.forward)
+		// 	this.speed += this.thrust * dt;
+		// else
+		// 	this.speed -= this.airResist * dt;
+		this.speed += dt * (this.thrust - this.airResist * this.speed)
 		if(this.key.ltrigger)
 		{
 			if(this.key.left)
